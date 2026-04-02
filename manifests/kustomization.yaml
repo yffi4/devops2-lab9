@@ -5,8 +5,6 @@ commonLabels:
   project: oauth-api
 
 resources:
-  - postgres-secret.yaml
-  - app-secret.yaml
   - postgres-pv.yaml
   - postgres-pvc.yaml
   - postgres-deployment.yaml
@@ -15,3 +13,5 @@ resources:
   - app-service.yaml
   - app-ingress.yaml
   - network-policy.yaml
+  - ../sealed-secrets/app-sealed-secret.yaml
+  - ../sealed-secrets/postgres-sealed-secret.yaml
