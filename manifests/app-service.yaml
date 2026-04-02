@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: oauth-api-service
+spec:
+  selector:
+    app: oauth-api
+  ports:
+  - port: 80
+    targetPort: 8140
+  type: ClusterIP

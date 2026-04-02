@@ -1,0 +1,21 @@
+apiVersion: v1
+entries:
+  oauth-app:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2026-03-26T05:58:19.016105365Z"
+    dependencies:
+    - name: api
+      repository: ""
+      version: 1.0.0
+    - name: postgres
+      repository: ""
+      version: 1.0.0
+    description: OAuth API with PostgreSQL — midterm project
+    digest: 2b97dd4e6fd0cc2b76b1fed794bb492b7d52f580690ec77cc9c8617f40c4a3de
+    name: oauth-app
+    type: application
+    urls:
+    - https://yffi4.github.io/helm-charts/oauth-app-1.0.0.tgz
+    version: 1.0.0
+generated: "2026-03-26T05:58:19.015242663Z"

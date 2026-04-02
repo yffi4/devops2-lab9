@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: alembic-migrate
+spec:
+  template:
+    spec:
+      containers:
+      - name: migrate
+        image: my-oauth-api:v1
+        imagePullPolicy: Never
+        command: ["alembic", "upgrade", "head"]
+        envFrom:
+        - secretRef:
+            name: app-secret
+      restartPolicy: Never
+  backoffLimit: 3
