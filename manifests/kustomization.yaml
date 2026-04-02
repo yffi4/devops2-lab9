@@ -1,8 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-commonLabels:
-  project: oauth-api
+labels:
+  - pairs:
+      project: oauth-api
 
 resources:
   - postgres-pv.yaml
@@ -13,5 +14,5 @@ resources:
   - app-service.yaml
   - app-ingress.yaml
   - network-policy.yaml
-  - ../sealed-secrets/app-sealed-secret.yaml
-  - ../sealed-secrets/postgres-sealed-secret.yaml
+  - app-sealed-secret.yaml
+  - postgres-sealed-secret.yaml
