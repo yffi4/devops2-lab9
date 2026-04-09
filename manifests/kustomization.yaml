@@ -6,7 +6,6 @@ labels:
       project: oauth-api
 
 resources:
-  - postgres-pv.yaml
   - postgres-pvc.yaml
   - postgres-deployment.yaml
   - postgres-service.yaml
