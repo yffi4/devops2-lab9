@@ -14,3 +14,5 @@ resources:
   - network-policy.yaml
   - app-sealed-secret.yaml
   - postgres-sealed-secret.yaml
+  - snapshot-rbac.yaml
+  - snapshot-cronjob.yaml
