@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: postgres-snapshot
+spec:
+  schedule: "*/5 * * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: snapshot-sa
+          containers:
+          - name: snapshot
+            image: bitnami/kubectl:latest
+            command:
+            - /bin/sh
+            - -c
+            - |
+              TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+              cat <<SNAP | kubectl apply -f -
+              apiVersion: snapshot.storage.k8s.io/v1
+              kind: VolumeSnapshot
+              metadata:
+                name: postgres-snap-${TIMESTAMP}
+                namespace: default
+              spec:
+                volumeSnapshotClassName: longhorn-snapshot
+                source:
+                  persistentVolumeClaimName: postgres-pvc
+              SNAP
+              echo "Snapshot postgres-snap-${TIMESTAMP} created"
+          restartPolicy: OnFailure
