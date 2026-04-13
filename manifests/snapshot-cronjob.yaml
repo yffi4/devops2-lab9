@@ -28,7 +28,7 @@ spec:
               spec:
                 volumeSnapshotClassName: longhorn-snapshot
                 source:
-                  persistentVolumeClaimName: postgres-pvc
+                  persistentVolumeClaimName: postgres-storage-postgres-0
               SNAP
               echo "Snapshot postgres-snap-${TIMESTAMP} created"
           restartPolicy: OnFailure
