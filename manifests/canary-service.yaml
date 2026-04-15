@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: oauth-frontend-service
+spec:
+  selector:
+    app: oauth-frontend
+  ports:
+  - port: 80
+    targetPort: 80
+  type: ClusterIP

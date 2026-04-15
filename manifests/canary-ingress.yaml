@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: oauth-frontend-ingress
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: frontend.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: oauth-frontend-service
+            port:
+              number: 80
