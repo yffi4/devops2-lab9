@@ -14,11 +14,14 @@ spec:
     canary:
       steps:
       - setWeight: 20
-      - pause: {duration: 30s}
+      - pause: {duration: 20s}
+      - analysis:
+          templates:
+          - templateName: canary-health-check
       - setWeight: 50
-      - pause: {duration: 30s}
+      - pause: {duration: 20s}
       - setWeight: 80
-      - pause: {duration: 30s}
+      - pause: {duration: 20s}
   template:
     metadata:
       labels:

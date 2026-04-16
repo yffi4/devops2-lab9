@@ -16,6 +16,9 @@ spec:
       previewService: oauth-api-preview
       autoPromotionEnabled: false
       scaleDownDelaySeconds: 30
+      prePromotionAnalysis:
+        templates:
+        - templateName: bluegreen-health-check
   template:
     metadata:
       labels:
@@ -27,7 +30,7 @@ spec:
         runAsGroup: 1000
       containers:
       - name: oauth-api
-        image: my-oauth-api:v2
+        image: my-oauth-api:v1
         imagePullPolicy: Never
         ports:
         - containerPort: 8140

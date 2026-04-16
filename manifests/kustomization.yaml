@@ -8,14 +8,16 @@ labels:
 resources:
   - postgres-statefulset.yaml
   - postgres-service.yaml
+  - app-rollout.yaml
   - app-service.yaml
   - app-service-preview.yaml
   - app-ingress.yaml
   - app-ingress-preview.yaml
-  - app-rollout.yaml
+  - bluegreen-analysis.yaml
   - canary-rollout.yaml
   - canary-service.yaml
   - canary-ingress.yaml
+  - canary-analysis.yaml
   - network-policy.yaml
   - app-sealed-secret.yaml
   - postgres-sealed-secret.yaml

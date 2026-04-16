@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: canary-health-check
+spec:
+  metrics:
+  - name: health-check
+    interval: 10s
+    count: 3
+    failureLimit: 1
+    provider:
+      job:
+        spec:
+          template:
+            spec:
+              containers:
+              - name: health
+                image: curlimages/curl
+                command:
+                - sh
+                - -c
+                - |
+                  STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://oauth-frontend-service)
+                  if [ "$STATUS" != "200" ]; then
+                    echo "Health check failed: $STATUS"
+                    exit 1
+                  fi
+                  echo "Health check passed: $STATUS"
+              restartPolicy: Never
+          backoffLimit: 0

@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: bluegreen-health-check
+spec:
+  metrics:
+  - name: api-health
+    interval: 10s
+    count: 3
+    failureLimit: 1
+    provider:
+      job:
+        spec:
+          template:
+            spec:
+              containers:
+              - name: health
+                image: curlimages/curl
+                command:
+                - sh
+                - -c
+                - |
+                  STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://oauth-api-preview/docs)
+                  if [ "$STATUS" != "200" ]; then
+                    echo "API health check failed: $STATUS"
+                    exit 1
+                  fi
+                  echo "API health check passed: $STATUS"
+              restartPolicy: Never
+          backoffLimit: 0
