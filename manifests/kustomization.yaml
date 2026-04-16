@@ -8,9 +8,11 @@ labels:
 resources:
   - postgres-statefulset.yaml
   - postgres-service.yaml
-  - app-deployment.yaml
   - app-service.yaml
+  - app-service-preview.yaml
   - app-ingress.yaml
+  - app-ingress-preview.yaml
+  - app-rollout.yaml
   - canary-rollout.yaml
   - canary-service.yaml
   - canary-ingress.yaml

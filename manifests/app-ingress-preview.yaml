@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: oauth-api-preview-ingress
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: oauth-preview.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: oauth-api-preview
+            port:
+              number: 80
