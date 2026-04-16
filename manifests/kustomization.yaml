@@ -19,6 +19,9 @@ resources:
   - canary-ingress.yaml
   - canary-analysis.yaml
   - network-policy.yaml
+  - app-hpa.yaml
+  - canary-hpa.yaml
+  - app-vpa.yaml
   - app-sealed-secret.yaml
   - postgres-sealed-secret.yaml
   - snapshot-rbac.yaml
