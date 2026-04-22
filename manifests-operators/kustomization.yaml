@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+labels:
+  - pairs:
+      project: oauth-api
+      component: operators
+
+resources:
+  - validating-webhook-deploy.yaml
+  - validating-webhook-config.yaml
+  - debug-operator-deploy.yaml
+  - debug-operator-controller.yaml
+  - namespace-operator-deploy.yaml
+  - namespace-operator-controller.yaml

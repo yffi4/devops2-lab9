@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: validating-webhook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: validating-webhook
+  template:
+    metadata:
+      labels:
+        app: validating-webhook
+        team: platform
+    spec:
+      containers:
+      - name: webhook
+        image: validating-webhook:v2
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8443
+        volumeMounts:
+        - name: tls
+          mountPath: /certs
+          readOnly: true
+        resources:
+          requests:
+            cpu: "10m"
+            memory: "32Mi"
+          limits:
+            cpu: "100m"
+            memory: "128Mi"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8443
+            scheme: HTTPS
+          initialDelaySeconds: 5
+          periodSeconds: 10
+      volumes:
+      - name: tls
+        secret:
+          secretName: webhook-tls
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: validating-webhook-svc
+spec:
+  selector:
+    app: validating-webhook
+  ports:
+  - port: 443
+    targetPort: 8443

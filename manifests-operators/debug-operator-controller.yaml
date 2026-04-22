@@ -1,0 +1,15 @@
+apiVersion: metacontroller.k8s.io/v1alpha1
+kind: DecoratorController
+metadata:
+  name: debug-operator
+spec:
+  resources:
+  - apiVersion: v1
+    resource: pods
+  attachments:
+  - apiVersion: v1
+    resource: services
+  hooks:
+    sync:
+      webhook:
+        url: http://debug-operator-svc.default/sync

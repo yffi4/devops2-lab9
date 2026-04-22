@@ -1,0 +1,33 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: pod-team-label-validator
+webhooks:
+- name: pod-team-label.default.svc
+  admissionReviewVersions: ["v1"]
+  sideEffects: None
+  failurePolicy: Ignore
+  clientConfig:
+    service:
+      name: validating-webhook-svc
+      namespace: default
+      path: /validate
+      port: 443
+    caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURwRENDQW95Z0F3SUJBZ0lVSFBzWnBmSWdNRjBtWVFWK0ZRRndtRFN1bGZRd0RRWUpLb1pJaHZjTkFRRUwKQlFBd0xURXJNQ2tHQTFVRUF3d2lkbUZzYVdSaGRHbHVaeTEzWldKb2IyOXJMWE4yWXk1a1pXWmhkV3gwTG5OMgpZekFlRncweU5qQTBNakl4TnpBeE5ESmFGdzB5TnpBME1qSXhOekF4TkRKYU1DMHhLekFwQmdOVkJBTU1JblpoCmJHbGtZWFJwYm1jdGQyVmlhRzl2YXkxemRtTXVaR1ZtWVhWc2RDNXpkbU13Z2dFaU1BMEdDU3FHU0liM0RRRUIKQVFVQUE0SUJEd0F3Z2dFS0FvSUJBUUMvc3lRb0ZRSVhCOWdMM0pFejdpY2hMMURlVTN5OXl5VXlIUGNua3pSQQpidWltNjk5V2d2MXloWExOYWRNV2tTbHphUlo4L29MRUNub0RTRnRYZ0NLTkxhOE4ySzJWdzA2NnczcWxyc2xHCmJNSjhxaGRqUkt0TGNtR3VDekl0ZmpoYmt5KzZNSTlQWXk1SFZJN2tFam1zTnFDcTV5VjF6eXpEZG5TbHp5M0QKekxsYUF6ZFRIZlR0Zit5QmpvMnBTd0JRcnZHb0lNQ3AwZ0UyWUg2dUdmYWk4eDhLdHU5TEpHNklnRjh2cW43YQpsZzgxOHNHa2xQSEZvUlhsNW4yR2Rpc1AraUFMZEt6anJDM3lYajM1UW9zUXdNTUo3V1JFaU9aWXRSUm1pR2ZWCm9ramcrd25mM1puU052R3l4M3AvaExCMFdlSFVFUGhRNVZ1STRNejQzNzRuQWdNQkFBR2pnYnN3Z2Jnd0hRWUQKVlIwT0JCWUVGRzQyLzlhMC9ydllXd0FYaHVQL2VGRzE1TW9uTUI4R0ExVWRJd1FZTUJhQUZHNDIvOWEwL3J2WQpXd0FYaHVQL2VGRzE1TW9uTUE4R0ExVWRFd0VCL3dRRk1BTUJBZjh3WlFZRFZSMFJCRjR3WElJV2RtRnNhV1JoCmRHbHVaeTEzWldKb2IyOXJMWE4yWTRJZWRtRnNhV1JoZEdsdVp5MTNaV0pvYjI5ckxYTjJZeTVrWldaaGRXeDAKZ2lKMllXeHBaR0YwYVc1bkxYZGxZbWh2YjJzdGMzWmpMbVJsWm1GMWJIUXVjM1pqTUEwR0NTcUdTSWIzRFFFQgpDd1VBQTRJQkFRQklyZnRrTDB4U3lEamFTSGV0aW41c2VFRUs5QUdJeWlkdzgrOWF3MWRucGJoQnJUeHRwM1ZMCnI1TWZYS3NrbU5NVDZTeWcwS2x4MDMzQ2JrRVY0a2pLeFR3dVFPZlN4Nm1mZkJoSDVFZmdZWVhLQ3YzTVVsNjkKS2RRSmJ4czg5UnpGeTNuQ3h1Yi9nTVNSbnJ6Nk96QUcvaEFLZmJhbytGV1pmaTBzMlIrNncyY1ZOV0ZtWFFraQozdEpLN0dXMEc4WXdzNmo0UFBnUnJzak1OUnkxeVRaV2UyZjM2S2sxNzk5QzFqMUNsbURIclhYL0VMc0RBZ1ZmClVGSHBzTHkycFVKdUpzT2pJb0ZyaEtRNGxZTjV4STRIdVVTVFVqNDVxYjZwTDRuZTdDdHh4Ulp6cTZwdTZETHIKbm5hV3BDMzk5NXQ5VmhWdTcwYzEvTjBOUkpzZGdUcW0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+  rules:
+  - apiGroups: [""]
+    apiVersions: ["v1"]
+    operations: ["CREATE"]
+    resources: ["pods"]
+    scope: "Namespaced"
+  namespaceSelector:
+    matchExpressions:
+    - key: kubernetes.io/metadata.name
+      operator: NotIn
+      values:
+      - kube-system
+      - argocd
+      - longhorn-system
+      - argo-rollouts
+      - traefik
+      - metacontroller

@@ -1,0 +1,36 @@
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: require-team-label
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["CREATE"]
+      resources: ["pods"]
+  validations:
+  - expression: "has(object.metadata.labels) && 'team' in object.metadata.labels"
+    message: "Pod must have label 'team'. Example: --labels='team=backend'"
+---
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: require-team-label-binding
+spec:
+  policyName: require-team-label
+  validationActions:
+  - Deny
+  matchResources:
+    namespaceSelector:
+      matchExpressions:
+      - key: kubernetes.io/metadata.name
+        operator: NotIn
+        values:
+        - kube-system
+        - argocd
+        - longhorn-system
+        - argo-rollouts
+        - traefik
+        - metacontroller

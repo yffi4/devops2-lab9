@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: namespace-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: namespace-operator
+  template:
+    metadata:
+      labels:
+        app: namespace-operator
+        team: platform
+    spec:
+      containers:
+      - name: operator
+        image: namespace-operator:v1
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            cpu: "10m"
+            memory: "32Mi"
+          limits:
+            cpu: "100m"
+            memory: "128Mi"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: namespace-operator-svc
+spec:
+  selector:
+    app: namespace-operator
+  ports:
+  - port: 80
+    targetPort: 8080
