@@ -34,3 +34,4 @@ spec:
         - argo-rollouts
         - traefik
         - metacontroller
+        - default

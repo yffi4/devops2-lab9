@@ -7,8 +7,7 @@ labels:
       component: operators
 
 resources:
-  - validating-webhook-deploy.yaml
-  - validating-webhook-config.yaml
+  - validating-policy.yaml
   - debug-operator-deploy.yaml
   - debug-operator-controller.yaml
   - namespace-operator-deploy.yaml
