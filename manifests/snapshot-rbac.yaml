@@ -19,6 +19,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: snapshot-sa
+  namespace: default
 roleRef:
   kind: Role
   name: snapshot-role

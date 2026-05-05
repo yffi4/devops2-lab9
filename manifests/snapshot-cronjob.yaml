@@ -19,16 +19,27 @@ spec:
             - -c
             - |
               TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+              SNAPSHOT_NAME="postgres-snap-${TIMESTAMP}"
+
               cat <<SNAP | kubectl apply -f -
               apiVersion: snapshot.storage.k8s.io/v1
               kind: VolumeSnapshot
               metadata:
-                name: postgres-snap-${TIMESTAMP}
+                name: ${SNAPSHOT_NAME}
                 namespace: default
               spec:
                 volumeSnapshotClassName: longhorn-snapshot
                 source:
                   persistentVolumeClaimName: postgres-storage-postgres-0
               SNAP
-              echo "Snapshot postgres-snap-${TIMESTAMP} created"
+              echo "Snapshot ${SNAPSHOT_NAME} created"
+
+              KEEP=5
+              OLD=$(kubectl get volumesnapshot -n default \
+                --sort-by=.metadata.creationTimestamp \
+                -o name | grep "postgres-snap-" | head -n -${KEEP})
+              if [ -n "$OLD" ]; then
+                echo "$OLD" | xargs kubectl delete -n default
+                echo "Cleaned up old snapshots, keeping last ${KEEP}"
+              fi
           restartPolicy: OnFailure

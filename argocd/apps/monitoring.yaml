@@ -20,7 +20,7 @@ spec:
                 memory: 256Mi
               limits:
                 cpu: 500m
-                memory: 512Mi
+                memory: 1Gi
             retention: 3d
             storageSpec:
               volumeClaimTemplate:
@@ -35,6 +35,9 @@ spec:
             type: NodePort
             nodePort: 31300
           adminPassword: admin123
+          sidecar:
+            datasources:
+              defaultDatasourceEnabled: false
           resources:
             requests:
               cpu: 50m

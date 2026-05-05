@@ -1,0 +1,26 @@
+---
+# Kubernetes
+k8s_version: "1.31"
+pod_network_cidr: "192.168.0.0/16"   # Calico default
+kubeconfig_path: "/etc/kubernetes/admin.conf"
+
+# CNI
+calico_manifest_url: "https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/calico.yaml"
+
+# Helm chart versions — match ArgoCD apps exactly
+traefik_chart_version: "34.5.0"
+longhorn_chart_version: "1.11.1"
+sealed_secrets_chart_version: "2.16.2"
+argo_rollouts_chart_version: "2.37.7"
+kube_prometheus_stack_chart_version: "65.1.0"
+loki_stack_chart_version: "2.10.2"
+
+# NodePorts — match ArgoCD apps exactly
+traefik_nodeport_web: 31892
+traefik_nodeport_websecure: 32452
+argo_rollouts_dashboard_nodeport: 31390
+grafana_nodeport: 31300
+
+# Metacontroller
+metacontroller_manifest_url: "https://raw.githubusercontent.com/metacontroller/metacontroller/v4.11.12/manifests/production/metacontroller-rbac.yaml"
+metacontroller_crds_url: "https://raw.githubusercontent.com/metacontroller/metacontroller/v4.11.12/manifests/production/metacontroller.yaml"
