@@ -13,9 +13,9 @@ spec:
       prometheus:
         address: http://monitoring-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
         query: |
-          (sum(rate(traefik_router_requests_total{service=~".*oauth-frontend.*",code=~"5.."}[2m])) or vector(0))
+          (sum(rate(traefik_router_requests_total{service=~".*oauth-frontend.*",code=~"5.."}[2m])) or on() vector(0))
           /
-          (sum(rate(traefik_router_requests_total{service=~".*oauth-frontend.*"}[2m])) or vector(1))
+          (sum(rate(traefik_router_requests_total{service=~".*oauth-frontend.*"}[2m])) or on() vector(1))
 
   - name: memory-utilization
     interval: 30s
