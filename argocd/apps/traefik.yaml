@@ -28,13 +28,15 @@ spec:
             entryPoint: metrics
             addRoutersLabels: true
             addServicesLabels: true
+            service:
+              enabled: true
+            serviceMonitor:
+              enabled: true
+              honorLabels: true
         providers:
           kubernetesIngress:
             publishedService:
               enabled: true
-        serviceMonitor:
-          enabled: true
-          honorLabels: true
   destination:
     server: https://kubernetes.default.svc
     namespace: traefik
