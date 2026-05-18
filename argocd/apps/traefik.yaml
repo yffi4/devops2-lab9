@@ -19,6 +19,11 @@ spec:
             nodePort: 31892
           websecure:
             nodePort: 32452
+        ports:
+          metrics:
+            port: 9100
+            expose:
+              default: false
         metrics:
           prometheus:
             entryPoint: metrics
@@ -30,6 +35,7 @@ spec:
               enabled: true
         serviceMonitor:
           enabled: true
+          honorLabels: true
   destination:
     server: https://kubernetes.default.svc
     namespace: traefik
