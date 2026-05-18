@@ -12,6 +12,12 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: default
+  ignoreDifferences:
+    - group: argoproj.io
+      kind: Rollout
+      name: oauth-api
+      jsonPointers:
+        - /spec/replicas
   syncPolicy:
     automated:
       prune: true

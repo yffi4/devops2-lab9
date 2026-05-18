@@ -13,9 +13,11 @@ spec:
       prometheus:
         address: http://monitoring-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
         query: |
-          (sum(rate(traefik_router_requests_total{service=~".*oauth-frontend.*",code=~"5.."}[2m])) or on() vector(0))
-          /
-          (sum(rate(traefik_router_requests_total{service=~".*oauth-frontend.*"}[2m])) or on() vector(1))
+          scalar(
+            (sum(rate(traefik_router_requests_total{service=~".*oauth-frontend.*",code=~"5.."}[2m])) or on() vector(0))
+            /
+            (sum(rate(traefik_router_requests_total{service=~".*oauth-frontend.*"}[2m])) or on() vector(1))
+          )
 
   - name: memory-utilization
     interval: 30s
@@ -26,10 +28,12 @@ spec:
       prometheus:
         address: http://monitoring-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
         query: |
-          max(
-            container_memory_working_set_bytes{namespace="default",container="frontend"}
-            /
-            container_spec_memory_limit_bytes{namespace="default",container="frontend"}
+          scalar(
+            (max(
+              container_memory_working_set_bytes{namespace="default",container="frontend"}
+              /
+              container_spec_memory_limit_bytes{namespace="default",container="frontend"}
+            ) or on() vector(0))
           )
 
   - name: pod-restarts
@@ -41,7 +45,9 @@ spec:
       prometheus:
         address: http://monitoring-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
         query: |
-          (sum(increase(kube_pod_container_status_restarts_total{
-            namespace="default",
-            container="frontend"
-          }[5m])) or on() vector(0))
+          scalar(
+            (sum(increase(kube_pod_container_status_restarts_total{
+              namespace="default",
+              container="frontend"
+            }[5m])) or on() vector(0))
+          )
