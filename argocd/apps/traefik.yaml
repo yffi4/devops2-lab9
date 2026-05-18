@@ -19,6 +19,17 @@ spec:
             nodePort: 31892
           websecure:
             nodePort: 32452
+        metrics:
+          prometheus:
+            entryPoint: metrics
+            addRoutersLabels: true
+            addServicesLabels: true
+        providers:
+          kubernetesIngress:
+            publishedService:
+              enabled: true
+        serviceMonitor:
+          enabled: true
   destination:
     server: https://kubernetes.default.svc
     namespace: traefik

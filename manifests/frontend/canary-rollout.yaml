@@ -17,7 +17,7 @@ spec:
       - pause: {duration: 20s}
       - analysis:
           templates:
-          - templateName: canary-health-check
+          - templateName: canary-production-readiness
       - setWeight: 50
       - pause: {duration: 20s}
       - setWeight: 80

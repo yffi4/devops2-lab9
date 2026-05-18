@@ -19,7 +19,7 @@ spec:
       scaleDownDelaySeconds: 30
       prePromotionAnalysis:
         templates:
-        - templateName: bluegreen-health-check
+        - templateName: bluegreen-production-readiness
   template:
     metadata:
       labels:

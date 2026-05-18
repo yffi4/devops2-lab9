@@ -1,7 +1,9 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
-  name: canary-health-check
+  name: canary-production-readiness
+  annotations:
+    description: "Multi-dimensional canary analysis: HTTP error rate, memory pressure, and crash stability"
 spec:
   metrics:
   - name: error-rate

@@ -1,7 +1,9 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
-  name: bluegreen-health-check
+  name: bluegreen-production-readiness
+  annotations:
+    description: "Multi-dimensional blue-green analysis: HTTP error rate, P95 latency, and crash stability"
 spec:
   metrics:
   - name: error-rate
