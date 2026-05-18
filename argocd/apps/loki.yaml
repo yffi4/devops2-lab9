@@ -25,18 +25,7 @@ spec:
             storageClassName: longhorn
             size: 5Gi
         promtail:
-          resources:
-            requests:
-              cpu: 10m
-              memory: 32Mi
-            limits:
-              cpu: 100m
-              memory: 128Mi
-          extraVolumes:
-          - name: positions
-            emptyDir: {}
-          containerSecurityContext:
-            privileged: true
+          enabled: false
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
