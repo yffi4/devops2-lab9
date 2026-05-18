@@ -6,23 +6,23 @@ labels:
       project: oauth-api
 
 resources:
-  - postgres-statefulset.yaml
-  - postgres-service.yaml
-  - app-rollout.yaml
-  - app-service.yaml
-  - app-service-preview.yaml
-  - app-ingress.yaml
-  - app-ingress-preview.yaml
-  - bluegreen-analysis.yaml
-  - canary-rollout.yaml
-  - canary-service.yaml
-  - canary-ingress.yaml
-  - canary-analysis.yaml
+  - postgres/postgres-statefulset.yaml
+  - postgres/postgres-service.yaml
+  - postgres/postgres-sealed-secret.yaml
+  - postgres/db-snapshots/snapshot-rbac.yaml
+  - postgres/db-snapshots/snapshot-cronjob.yaml
+  - oauth-api/app-rollout.yaml
+  - oauth-api/app-service.yaml
+  - oauth-api/app-ingress.yaml
+  - oauth-api/oauth-preview/app-service-preview.yaml
+  - oauth-api/oauth-preview/app-ingress-preview.yaml
+  - oauth-api/bluegreen-analysis.yaml
+  - frontend/canary-rollout.yaml
+  - frontend/canary-service.yaml
+  - frontend/canary-ingress.yaml
+  - frontend/canary-analysis.yaml
+  - frontend/canary-hpa.yaml
+  - oauth-api/autoscalers/app-hpa.yaml
+  - oauth-api/autoscalers/app-vpa.yaml
+  - oauth-api/app-sealed-secret.yaml
   - network-policy.yaml
-  - app-hpa.yaml
-  - canary-hpa.yaml
-  - app-vpa.yaml
-  - app-sealed-secret.yaml
-  - postgres-sealed-secret.yaml
-  - snapshot-rbac.yaml
-  - snapshot-cronjob.yaml

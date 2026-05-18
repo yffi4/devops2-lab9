@@ -3,7 +3,7 @@ kind: Rollout
 metadata:
   name: oauth-api
   labels:
-        team: backend
+    team: backend
     app: oauth-api
 spec:
   replicas: 2
