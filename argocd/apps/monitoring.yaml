@@ -16,8 +16,8 @@ spec:
           prometheusSpec:
             resources:
               requests:
-                cpu: 50m
-                memory: 256Mi
+                cpu: 375m
+                memory: 768Mi
               limits:
                 cpu: 500m
                 memory: 1Gi
@@ -40,8 +40,8 @@ spec:
               defaultDatasourceEnabled: false
           resources:
             requests:
-              cpu: 50m
-              memory: 128Mi
+              cpu: 150m
+              memory: 192Mi
             limits:
               cpu: 200m
               memory: 256Mi
@@ -49,8 +49,8 @@ spec:
           alertmanagerSpec:
             resources:
               requests:
-                cpu: 10m
-                memory: 32Mi
+                cpu: 75m
+                memory: 96Mi
               limits:
                 cpu: 100m
                 memory: 128Mi
@@ -59,11 +59,17 @@ spec:
             requests:
               cpu: 10m
               memory: 32Mi
+            limits:
+              cpu: 15m
+              memory: 48Mi
         prometheusOperator:
           resources:
             requests:
               cpu: 10m
               memory: 32Mi
+            limits:
+              cpu: 15m
+              memory: 48Mi
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring

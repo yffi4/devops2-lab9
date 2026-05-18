@@ -4,27 +4,43 @@ metadata:
   name: bluegreen-health-check
 spec:
   metrics:
-  - name: api-health
-    interval: 10s
-    count: 3
+  - name: error-rate
+    interval: 30s
+    count: 5
     failureLimit: 1
+    successCondition: result < 0.05
     provider:
-      job:
-        spec:
-          template:
-            spec:
-              containers:
-              - name: health
-                image: curlimages/curl
-                command:
-                - sh
-                - -c
-                - |
-                  STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://oauth-api-preview/docs)
-                  if [ "$STATUS" != "200" ]; then
-                    echo "API health check failed: $STATUS"
-                    exit 1
-                  fi
-                  echo "API health check passed: $STATUS"
-              restartPolicy: Never
-          backoffLimit: 0
+      prometheus:
+        address: http://monitoring-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
+        query: |
+          (sum(rate(traefik_router_requests_total{service=~".*oauth-api-preview.*",code=~"5.."}[2m])) or vector(0))
+          /
+          (sum(rate(traefik_router_requests_total{service=~".*oauth-api-preview.*"}[2m])) or vector(1))
+
+  - name: latency-p95
+    interval: 30s
+    count: 5
+    failureLimit: 1
+    successCondition: result < 1.0
+    provider:
+      prometheus:
+        address: http://monitoring-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
+        query: |
+          (histogram_quantile(0.95,
+            sum(rate(traefik_router_request_duration_seconds_bucket{
+              service=~".*oauth-api-preview.*"
+            }[2m])) by (le)) or vector(0))
+
+  - name: pod-restarts
+    interval: 30s
+    count: 5
+    failureLimit: 0
+    successCondition: result == 0
+    provider:
+      prometheus:
+        address: http://monitoring-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
+        query: |
+          (sum(increase(kube_pod_container_status_restarts_total{
+            namespace="default",
+            container="oauth-api"
+          }[5m])) or vector(0))

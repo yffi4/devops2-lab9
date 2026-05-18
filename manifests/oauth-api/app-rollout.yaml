@@ -44,8 +44,8 @@ spec:
             name: app-secret
         resources:
           requests:
-            cpu: "10m"
-            memory: "32Mi"
+            cpu: "150m"
+            memory: "192Mi"
           limits:
             cpu: "200m"
             memory: "256Mi"

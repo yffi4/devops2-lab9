@@ -10,8 +10,8 @@ spec:
       - name: oauth-api
         resources:
           requests:
-            cpu: "100m"
-            memory: "128Mi"
+            cpu: "750m"
+            memory: "768Mi"
           limits:
             cpu: "1"
-            memory: "1Gb"
+            memory: "1Gi"
