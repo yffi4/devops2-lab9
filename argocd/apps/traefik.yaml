@@ -19,7 +19,6 @@ spec:
             nodePort: 31892
           websecure:
             nodePort: 32452
-        ports:
           metrics:
             port: 9100
             expose:
