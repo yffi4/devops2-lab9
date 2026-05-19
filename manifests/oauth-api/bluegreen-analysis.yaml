@@ -4,22 +4,23 @@ metadata:
   name: bluegreen-health-check
 spec:
   metrics:
-  - name: error-rate
-    interval: 30s
-    count: 3
-    failureLimit: 1
-    consecutiveErrorLimit: 5
+  - name: pod-readiness
+    initialDelay: 30s
+    interval: 15s
+    count: 5
+    failureLimit: 2
     provider:
       prometheus:
         address: http://monitoring-kube-prometheus-prometheus.monitoring:9090
         query: |
           scalar(
-            sum(rate(
-              container_cpu_usage_seconds_total{
+            min(
+              kube_pod_status_ready{
                 namespace="default",
-                pod=~"oauth-api.*"
-              }[2m]
-            )) or vector(0)
+                pod=~"oauth-api.*",
+                condition="true"
+              }
+            ) or vector(1)
           )
-    successCondition: "result >= 0"
-    failureCondition: "result < 0"
+    successCondition: "result >= 1"
+    failureCondition: "result == 0"
