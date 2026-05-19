@@ -37,6 +37,9 @@ spec:
             type: NodePort
             nodePort: 31300
           adminPassword: admin123
+          grafana.ini:
+            date_formats:
+              default_timezone: UTC
           sidecar:
             datasources:
               defaultDatasourceEnabled: false

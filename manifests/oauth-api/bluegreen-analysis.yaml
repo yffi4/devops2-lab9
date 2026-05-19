@@ -23,15 +23,19 @@ spec:
     interval: 30s
     count: 5
     failureLimit: 1
+    errorLimit: 2
     successCondition: result < 1.0
     provider:
       prometheus:
         address: http://monitoring-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
         query: |
-          (histogram_quantile(0.95,
-            sum(rate(traefik_router_request_duration_seconds_bucket{
-              service=~".*oauth-api-preview.*"
-            }[2m])) by (le)) or vector(0))
+          (
+            histogram_quantile(0.95,
+              sum(rate(traefik_router_request_duration_seconds_bucket{
+                service=~".*oauth-api-preview.*"
+              }[2m])) by (le)
+            ) > 0
+          ) or on() vector(0)
 
   - name: pod-restarts
     interval: 30s
