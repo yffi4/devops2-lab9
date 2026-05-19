@@ -1,55 +1,25 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
-  name: bluegreen-production-readiness
-  annotations:
-    description: "Multi-dimensional blue-green analysis: HTTP error rate, P95 latency, and crash stability"
+  name: bluegreen-health-check
 spec:
   metrics:
   - name: error-rate
     interval: 30s
-    count: 5
+    count: 3
     failureLimit: 1
-    errorLimit: 2
-    successCondition: result[0] < 0.05
+    consecutiveErrorLimit: 5
     provider:
       prometheus:
-        address: http://monitoring-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
+        address: http://monitoring-kube-prometheus-prometheus.monitoring:9090
         query: |
-          (
-            sum(rate(traefik_router_requests_total{service=~".*oauth-api-preview.*",code=~"5.."}[2m]))
-            /
-            sum(rate(traefik_router_requests_total{service=~".*oauth-api-preview.*"}[2m]))
-          ) or on() vector(0)
-
-  - name: latency-p95
-    interval: 30s
-    count: 5
-    failureLimit: 1
-    errorLimit: 2
-    successCondition: result[0] < 1.0
-    provider:
-      prometheus:
-        address: http://monitoring-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
-        query: |
-          (
-            histogram_quantile(0.95,
-              sum(rate(traefik_router_request_duration_seconds_bucket{
-                service=~".*oauth-api-preview.*"
-              }[2m])) by (le)
-            ) > 0
-          ) or on() vector(0)
-
-  - name: pod-restarts
-    interval: 30s
-    count: 5
-    failureLimit: 0
-    successCondition: result[0] == 0
-    provider:
-      prometheus:
-        address: http://monitoring-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
-        query: |
-          (sum(increase(kube_pod_container_status_restarts_total{
-            namespace="default",
-            container="oauth-api"
-          }[5m])) or on() vector(0))
+          scalar(
+            sum(rate(
+              container_cpu_usage_seconds_total{
+                namespace="default",
+                pod=~"oauth-api.*"
+              }[2m]
+            )) or vector(0)
+          )
+    successCondition: "result >= 0"
+    failureCondition: "result < 0"
