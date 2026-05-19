@@ -15,9 +15,11 @@ spec:
       prometheus:
         address: http://monitoring-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
         query: |
-          (sum(rate(traefik_router_requests_total{service=~".*oauth-api-preview.*",code=~"5.."}[2m])) or on() vector(0))
-          /
-          (sum(rate(traefik_router_requests_total{service=~".*oauth-api-preview.*"}[2m])) or on() vector(1))
+          (
+            sum(rate(traefik_router_requests_total{service=~".*oauth-api-preview.*",code=~"5.."}[2m]))
+            /
+            sum(rate(traefik_router_requests_total{service=~".*oauth-api-preview.*"}[2m]))
+          ) or on() vector(0)
 
   - name: latency-p95
     interval: 30s
