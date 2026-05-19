@@ -10,7 +10,8 @@ spec:
     interval: 30s
     count: 5
     failureLimit: 1
-    successCondition: result < 0.05
+    errorLimit: 2
+    successCondition: result[0] < 0.05
     provider:
       prometheus:
         address: http://monitoring-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
@@ -26,7 +27,7 @@ spec:
     count: 5
     failureLimit: 1
     errorLimit: 2
-    successCondition: result < 1.0
+    successCondition: result[0] < 1.0
     provider:
       prometheus:
         address: http://monitoring-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
@@ -43,7 +44,7 @@ spec:
     interval: 30s
     count: 5
     failureLimit: 0
-    successCondition: result == 0
+    successCondition: result[0] == 0
     provider:
       prometheus:
         address: http://monitoring-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
